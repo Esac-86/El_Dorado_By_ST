@@ -46,8 +46,10 @@ export default function Dashboard() {
   };
 
   const handleCrearPasajero = () => {
-    // Acción a realizar cuando se presiona el botón "Crear Pasajero"
+    navigation.navigate('CrearPasajero', { vuelos: vuelos });
   };
+  
+  
 
   return (
     <View style={styles.container}>

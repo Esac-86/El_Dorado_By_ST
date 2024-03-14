@@ -35,6 +35,7 @@ export default function DetallesVuelo({ route, navigation }) {
   const handleEditarVuelo = () => {
     navigation.navigate('EditarVuelo', { codvuelo: vuelo.codvuelo });
   };
+  
 
   const handleEliminarVuelo = () => {
     if (vuelo) {

@@ -137,7 +137,7 @@ const CrearVuelo = () => {
           value={formData.horasalida}
           mode="time"
           is24Hour={false}
-          display="spinner"
+          display="clock"
           onChange={handleTimeChangeSalida}
         />
       )}
@@ -152,7 +152,7 @@ const CrearVuelo = () => {
           value={formData.horallegada}
           mode="time"
           is24Hour={false}
-          display="spinner"
+          display="clock"
           onChange={handleTimeChangeLlegada}
         />
       )}

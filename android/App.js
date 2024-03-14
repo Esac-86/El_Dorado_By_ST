@@ -6,6 +6,7 @@ import DashboardView from './src/views/DashboardView';
 import DetallesVuelo from './src/views/DetallesVueloView';
 import CrearVuelo from './src/views/CrearVueloView'
 import EditarVuelo from './src/views/EditarVueloView'
+import CrearPasajero from './src/views/CrearPasajeroView';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ export default function App() {
         <Stack.Screen name="DetallesVuelo" component={DetallesVuelo} options={{ title: '' }} />
         <Stack.Screen name="CrearVuelo" component={CrearVuelo} options={{ title: '' }} />
         <Stack.Screen name="EditarVuelo" component={EditarVuelo} options={{ title: '' }} />
+        <Stack.Screen name="CrearPasajero" component={CrearPasajero} options={{ title: '' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
