@@ -1,0 +1,9 @@
+.navegador {
+    width: 100%;
+    background-color: rgb(0, 0, 0);
+    margin: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+}

@@ -1,0 +1,8 @@
+.contenedorLogin {
+    /*     background-image: url('src/img/piloto.jpg'); */
+    background-color: rgb(255, 255, 255);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: calc(100vh - 102px);
+}
