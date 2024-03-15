@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 import { detallesVueloStyles } from '../styles/DetallesVueloStyles';
 import getData from '../functions/GetData';
 import { getDestinoName, getAerolineaName, calcularTiempoVuelo, formatHora } from '../functions/FlightUtils';
 
-import { BACKEND_URL } from '@env'
+import { BACKEND_URL } from '@env';
 
 export default function DetallesVuelo({ route, navigation }) {
   const codvuelo = route.params ? route.params.codvuelo : null;
@@ -29,30 +29,47 @@ export default function DetallesVuelo({ route, navigation }) {
   }, [codvuelo]);
 
   const handleVerPasajeros = () => {
-    // Agrega la lógica para ver los pasajeros del vuelo
+    navigation.navigate('VerPasajeros', { codvuelo: codvuelo });
   };
 
   const handleEditarVuelo = () => {
     navigation.navigate('EditarVuelo', { codvuelo: vuelo.codvuelo });
   };
-  
 
   const handleEliminarVuelo = () => {
     if (vuelo) {
-      axios.delete(`${BACKEND_URL}/vuelos/eliminar/${vuelo.codvuelo}`)
-        .then(response => {
-          if (response.status === 200) {
-            alert('El vuelo ha sido eliminado exitosamente.');
-            navigation.goBack(); // Redireccionar a otra pantalla o realizar alguna acción adicional
-          } else {
-            alert('Error al eliminar el vuelo.');
-          }
-        })
-        .catch(error => {
-          console.error('Error al eliminar el vuelo:', error);
-          alert('Error al eliminar el vuelo.');
-        });
+      Alert.alert(
+        'Confirmar Eliminación',
+        '¿Estás seguro de que deseas eliminar este vuelo?',
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Eliminar',
+            onPress: () => confirmarEliminacion(),
+          },
+        ],
+        { cancelable: false }
+      );
     }
+  };
+
+  const confirmarEliminacion = () => {
+    axios.delete(`${BACKEND_URL}/vuelos/eliminar/${vuelo.codvuelo}`)
+      .then(response => {
+        if (response.status === 200) {
+          Alert.alert('Vuelo Eliminado', 'El vuelo ha sido eliminado exitosamente.');
+          navigation.goBack();
+        } else {
+          Alert.alert('Error', 'Error al eliminar el vuelo.');
+        }
+      })
+      .catch(error => {
+        console.error('Error al eliminar el vuelo:', error);
+        Alert.alert('Error', 'Error al eliminar el vuelo.');
+      });
   };
 
   if (!codvuelo) {
@@ -60,7 +77,7 @@ export default function DetallesVuelo({ route, navigation }) {
   }
 
   if (!vuelo || !destinos.length || !aerolineas.length) {
-    return <Text></Text>; 
+    return <Text></Text>;
   }
 
   return (
@@ -74,14 +91,14 @@ export default function DetallesVuelo({ route, navigation }) {
         <Text style={detallesVueloStyles.text}>Hora de llegada: {formatHora(vuelo.horallegada)}</Text>
         <Text style={detallesVueloStyles.text}>Tiempo de vuelo: {calcularTiempoVuelo(vuelo.horasalida, vuelo.horallegada)}</Text>
       </View>
+      <TouchableOpacity onPress={handleVerPasajeros} style={detallesVueloStyles.button}>
+        <Text style={detallesVueloStyles.buttonText}>Ver Pasajeros</Text>
+      </TouchableOpacity>
       <TouchableOpacity onPress={handleEditarVuelo} style={detallesVueloStyles.button}>
         <Text style={detallesVueloStyles.buttonText}>Editar Vuelo</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handleEliminarVuelo} style={detallesVueloStyles.button}>
         <Text style={detallesVueloStyles.buttonText}>Eliminar Vuelo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleVerPasajeros} style={detallesVueloStyles.button}>
-        <Text style={detallesVueloStyles.buttonText}>Ver Pasajeros</Text>
       </TouchableOpacity>
     </View>
   );

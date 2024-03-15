@@ -11,8 +11,28 @@ function GestionVuelos() {
   const [destinos, setDestinos] = useState([]);
   const [aerolineas, setAerolineas] = useState([]);
 
+  // Mapeado de destinos y aerolíneas
+  const destinosMap = {
+    1: 'Armenia',
+    2: 'Barranquilla',
+    3: 'Cali',
+    4: 'Cartagena',
+    5: 'Barranquilla',
+    6: 'Medellin',
+    7: 'San Andres',
+  };
+
+  const aerolineasMap = {
+    1: 'Avianca',
+    2: 'Satena',
+    3: 'Wingo',
+    4: 'Latam',
+    5: 'Ultra Air',
+    6: 'Easyfly',
+  };
+
   useEffect(() => {
-    axios.get('http://localhost:3000/dorado/vuelos/consultar')
+    axios.get('https://el-dorado-backend.onrender.com/dorado/vuelos/consultar')
       .then(response => {
         const vuelosOrdenados = response.data.vuelos.sort((a, b) => {
           const horaSalidaA = new Date(`2023-01-01T${a.horasalida}`).getTime();
@@ -26,7 +46,7 @@ function GestionVuelos() {
         console.error('Error al obtener vuelos:', error);
       });
 
-    axios.get('http://localhost:3000/dorado/destinos')
+    axios.get('https://el-dorado-backend.onrender.com/dorado/destinos')
       .then(response => {
         setDestinos(response.data.destinos || []);
       })
@@ -34,7 +54,7 @@ function GestionVuelos() {
         console.error('Error al obtener destinos:', error);
       });
 
-    axios.get('http://localhost:3000/dorado/aerolineas')
+    axios.get('https://el-dorado-backend.onrender.com/dorado/aerolineas')
       .then(response => {
         setAerolineas(response.data.aerolineas || []);
       })
@@ -51,7 +71,7 @@ function GestionVuelos() {
   const handleVerPasajerosClick = async (codVuelo) => {
     try {
       // Hacer la llamada al backend para obtener la lista de pasajeros del vuelo específico
-      const response = await axios.get(`http://localhost:3000/dorado/pasajeros/consultar/${codVuelo}`);
+      const response = await axios.get(`https://el-dorado-backend.onrender.com/dorado/pasajeros/consultar/${codVuelo}`);
       const pasajeros = response.data.pasajeros || [];
   
       // Verificar si hay pasajeros
@@ -68,17 +88,12 @@ function GestionVuelos() {
     }
   };
   
-
-
-
   const getDestinoName = (codDestino) => {
-    const destino = destinos.find(destino => destino.coddestino === codDestino);
-    return destino ? destino.descripcion : 'No encontrado';
+    return destinosMap[codDestino] || 'No encontrado';
   };
 
   const getAerolineaName = (codAerolinea) => {
-    const aerolinea = aerolineas.find(aerolinea => aerolinea.codaerolinea === codAerolinea);
-    return aerolinea ? aerolinea.descripcion : 'No encontrada';
+    return aerolineasMap[codAerolinea] || 'No encontrada';
   };
 
   const calcularTiempoVuelo = (horaSalida, horaLlegada) => {

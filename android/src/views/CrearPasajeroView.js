@@ -70,7 +70,23 @@ const CrearPasajero = () => {
         }
     };
 
-
+    const confirmarCreacionPasajero = () => {
+        Alert.alert(
+            'Confirmar creación',
+            '¿Estás seguro de que deseas crear este pasajero?',
+            [
+                {
+                    text: 'Cancelar',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Crear',
+                    onPress: handleSubmit,
+                },
+            ],
+            { cancelable: true }
+        );
+    };
 
     const handleInputChange = (name, value) => {
         setFormData({
@@ -121,7 +137,7 @@ const CrearPasajero = () => {
                     <Picker.Item key={index} label={`${vuelo.codvuelo} - ${getDestinoName(vuelo.coddestino, destinos)}`} value={vuelo.codvuelo} />
                 ))}
             </Picker>
-            <TouchableOpacity onPress={handleSubmit} style={styles.button}>
+            <TouchableOpacity onPress={confirmarCreacionPasajero} style={styles.button}>
                 <Text style={styles.buttonText}>Crear Pasajero</Text>
             </TouchableOpacity>
         </View>

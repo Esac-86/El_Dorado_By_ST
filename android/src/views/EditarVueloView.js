@@ -82,7 +82,7 @@ const EditarVuelo = ({ route }) => {
         });
       } catch (error) {
         console.error("Error al obtener detalles del vuelo:", error.response.data.message);
-        Alert.alert("Error", "Error al obtener detalles del vuelo. Por favor, inténtalo de nuevo.");
+        Alert.alert("Error", "Hubo un error al obtener detalles del vuelo. Por favor, inténtalo de nuevo.");
       }
     };
 
@@ -101,15 +101,33 @@ const EditarVuelo = ({ route }) => {
       };
       const response = await axios.put(`${BACKEND_URL}/vuelos/editar/${codvuelo}`, formattedData);
 
-      Alert.alert("Éxito", "Vuelo editado con éxito");
+      Alert.alert("Éxito", "El vuelo se ha editado correctamente.");
       navigation.navigate('Dashboard'); // Redirigir al dashboard después de editar el vuelo
       console.log(response.data.message);
     } catch (error) {
       console.error("Error al editar vuelo:", error.response.data.message);
-      Alert.alert("Error", "Error al editar vuelo. Por favor, inténtalo de nuevo.");
+      Alert.alert("Error", "Hubo un error al editar el vuelo. Por favor, inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const confirmarEdicionVuelo = () => {
+    Alert.alert(
+      'Confirmar edición',
+      '¿Estás seguro de que deseas editar este vuelo?',
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Editar',
+          onPress: handleSubmit,
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   return (
@@ -175,7 +193,7 @@ const EditarVuelo = ({ route }) => {
         />
       )}
       <TouchableOpacity
-        onPress={handleSubmit}
+        onPress={confirmarEdicionVuelo}
         style={styles.button}
         disabled={loading}
       >

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { Container, Input, Button, ButtonText, ErrorText, LoadingText } from '../styles/LoginStyles'; // Asegúrate de importar LoadingText desde tus estilos
-import { Alert, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { BACKEND_URL } from '@env'
 
 export default function LoginView() {
@@ -25,12 +25,11 @@ export default function LoginView() {
         navigation.navigate('Dashboard');
       } else {
         // Si la respuesta es un error, mostrar mensaje de error
-        setError(response.data.error);
+        setError('Usuario o contraseña incorrectos. Por favor, inténtalo de nuevo.');
       }
     } catch (error) {
-      // Si hay un error en la solicitud, mostrar mensaje de error
-      console.error('Error de inicio de sesión:', error);
-      setError('Hubo un error en la solicitud. Por favor, inténtalo de nuevo más tarde.');
+      // Si hay un error en la solicitud, mostrar mensaje de error genérico
+      setError('Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.');
     } finally {
       setLoading(false); // Establece el estado de carga de nuevo a falso después de que se completa la solicitud
     }

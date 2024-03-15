@@ -42,7 +42,7 @@ const CrearVuelo = () => {
 
       // Envía la solicitud al backend
       const response = await axios.post(
-        "http://localhost:3000/dorado/vuelos/crear",
+        "https://el-dorado-backend.onrender.com/dorado/vuelos/crear",
         formData
       );
 

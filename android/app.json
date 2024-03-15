@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "android",
+    "name": "El Dorado",
     "slug": "android",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,11 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.sleepeds1.android"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f8c355a0-db26-469b-88e7-1d23d54eb07a"
+      }
     }
-    
   }
 }

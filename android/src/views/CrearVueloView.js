@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Alert } from 'react-native';
 import clockIcon from '../img/clock.png';
 import { crearVueloStyles as styles } from '../styles/CrearVueloStyles';
-import { BACKEND_URL } from '@env'
+import { BACKEND_URL } from '@env';
 
 const CrearVuelo = () => {
   const navigation = useNavigation();
@@ -21,7 +20,7 @@ const CrearVuelo = () => {
   });
   const [showTimePickerSalida, setShowTimePickerSalida] = useState(false);
   const [showTimePickerLlegada, setShowTimePickerLlegada] = useState(false);
-  const [loading, setLoading] = useState(false); // Estado para controlar la carga
+  const [loading, setLoading] = useState(false); 
 
   const handleInputChange = (name, value) => {
     setFormData(prevData => ({
@@ -53,11 +52,33 @@ const CrearVuelo = () => {
   const handleSubmit = async () => {
     try {
       if (!formData.coddestino || !formData.codaerolinea || !formData.salaabordaje) {
-        return Alert.alert("Error", "Todos los campos son obligatorios.");
+        return Alert.alert("Campos Incompletos", "Por favor, completa todos los campos.");
       }
   
-      setLoading(true); // Establecer el estado de carga a verdadero
-      
+      Alert.alert(
+        "Confirmar Creación",
+        "¿Estás seguro de crear este vuelo?",
+        [
+          {
+            text: 'Cancelar',
+            style: 'cancel',
+          },
+          {
+            text: 'Crear',
+            onPress: () => crearVuelo(),
+          },
+        ],
+        { cancelable: false }
+      );
+    } catch (error) {
+      console.error("Error al crear vuelo:", error.response.data.message);
+      Alert.alert("Error", "Error al crear vuelo. Por favor, inténtalo de nuevo.");
+    }
+  };
+
+  const crearVuelo = async () => {
+    try {
+      setLoading(true); 
       const horaSalida = formData.horasalida.toLocaleTimeString('en-US', { hour12: false });
       const horaLlegada = formData.horallegada.toLocaleTimeString('en-US', { hour12: false });
   
@@ -75,7 +96,7 @@ const CrearVuelo = () => {
       console.error("Error al crear vuelo:", error.response.data.message);
       Alert.alert("Error", "Error al crear vuelo. Por favor, inténtalo de nuevo.");
     } finally {
-      setLoading(false); // Restablecer el estado de carga a falso
+      setLoading(false); 
     }
   };
 
@@ -159,13 +180,11 @@ const CrearVuelo = () => {
       <TouchableOpacity
         onPress={handleSubmit}
         style={styles.button}
-        disabled={loading} // Deshabilita el botón mientras se está cargando
+        disabled={loading}
       >
         {loading ? (
-          // Muestra un indicador de carga si loading es verdadero
           <ActivityIndicator size="small" color="#ffffff" />
         ) : (
-          // Muestra el texto del botón normalmente si no hay carga
           <Text style={styles.buttonText}>CREAR VUELO</Text>
         )}
       </TouchableOpacity>

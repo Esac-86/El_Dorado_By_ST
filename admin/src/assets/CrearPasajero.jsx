@@ -14,12 +14,11 @@ function CrearPasajero() {
         email: '',
         telefono: '',
         codvuelo: '',
-        foto: null,
     });
 
     useEffect(() => {
         // Cargar la lista de códigos de vuelo al montar el componente
-        axios.get('http://localhost:3000/dorado/vuelos/consultar')
+        axios.get('https://el-dorado-backend.onrender.com/dorado/vuelos/consultar')
             .then(response => {
                 const vuelos = response.data.vuelos || [];
                 const codigosVuelo = vuelos.map(vuelo => vuelo.codvuelo);
@@ -38,18 +37,10 @@ function CrearPasajero() {
         });
     };
 
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setFormData({
-            ...formData,
-            foto: file,
-        });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3000/dorado/pasajeros/crear', formData);
+            const response = await axios.post('https://el-dorado-backend.onrender.com/dorado/pasajeros/crear', formData);
             console.log('Respuesta por parte del servidor:', response.data);
             Swal.fire("Éxito", "Pasajero creado con éxito", "success");
         } catch (error) {
@@ -153,24 +144,6 @@ function CrearPasajero() {
                                 </option>
                             ))}
                         </select>
-                    </div>
-                    <div className="flex justify-center items-center h-full bg-gray-100 rounded-xl py-2">
-                        <div className="shrink-0 rounded-lg">
-                            <img className="h-48 w-48 object-cover border-2  rounded-full" src="src/img/user.webp" alt="Current profile photo" />
-                        </div>
-                        <label className="block">
-                            <span className="sr-only">Cargar foto de perfil</span>
-                            <input
-                                type="file"
-                                className="block w-full text-sm text-slate-500
-                                file:mr-4 file:py-2 file:px-4
-                                file:rounded-full file:border-0
-                                file:text-sm file:font-semibold
-                                file:bg-blue-50 file:text-blue-700
-                                hover:file:bg-blue-100"
-                                onChange={handleFileChange}
-                            />
-                        </label>
                     </div>
                 </div>
 

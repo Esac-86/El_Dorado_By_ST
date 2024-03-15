@@ -20,32 +20,24 @@ function ListaPasajeros() {
     const [vuelo, setVuelo] = useState(null);
 
     useEffect(() => {
-        // Hacer la llamada al backend para obtener la lista de pasajeros del vuelo específico
-        axios.get(`http://localhost:3000/dorado/pasajeros/consultar/${codVuelo}`)
-            .then(response => {
-                console.log('Datos del pasajero:', response.data);
-                setPasajeros(response.data.pasajeros || []);
-            })
-            .catch(error => {
-                console.error('Error al obtener pasajeros:', error);
-            });
+        const fetchData = async () => {
+            try {
+                const pasajerosResponse = await axios.get(`https://el-dorado-backend.onrender.com/dorado/pasajeros/consultar/${codVuelo}`);
+                setPasajeros(pasajerosResponse.data.pasajeros || []);
 
-        // Hacer la llamada al backend para obtener la información del vuelo
-        axios.get(`http://localhost:3000/dorado/vuelos/consultar/${codVuelo}`)
-            .then(response => {
-                console.log('Datos del vuelo:', response.data);
-                setVuelo(response.data.vuelo || null);
-            })
-            .catch(error => {
-                console.error('Error al obtener información del vuelo:', error);
-            });
+                const vueloResponse = await axios.get(`https://el-dorado-backend.onrender.com/dorado/vuelos/consultar/${codVuelo}`);
+                setVuelo(vueloResponse.data.vuelo || null);
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+            }
+        };
+
+        fetchData();
     }, [codVuelo]);
 
     const handleEliminarClick = async (id) => {
         try {
-            // Hacer la llamada al backend para eliminar el pasajero
-            await axios.delete(`http://localhost:3000/dorado/pasajeros/eliminar/${id}`);
-            // Actualizar la lista de pasajeros después de la eliminación
+            await axios.delete(`https://el-dorado-backend.onrender.com/dorado/pasajeros/eliminar/${id}`);
             setPasajeros(prevPasajeros => prevPasajeros.filter(pasajero => pasajero.id !== id));
         } catch (error) {
             console.error('Error al eliminar pasajero:', error);
